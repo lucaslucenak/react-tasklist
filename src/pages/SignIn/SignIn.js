@@ -6,13 +6,15 @@ export const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin =  (e) => {
-    try {
-      const response =  AuthService.login(username, password);
-      redirect("/");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    } catch (error) {
-      console.error('Erro no login: ', error);
+    try {
+      const response = await AuthService.login(username, password);
+      localStorage.setItem('jwt', response.jwtToken);
+      console.log(localStorage.getItem('jwt'));
+    } catch (e) {
+      alert("Erro ao logar: STATUS ", e.status)
     }
   }
 
@@ -30,7 +32,7 @@ export const SignIn = () => {
                   <div className="col-md-6 col-lg-7 d-flex align-items-center">
                     <div className="card-body p-4 p-lg-5 text-black">
 
-                      <form onSubmit={() => handleLogin()}>
+                      <form onSubmit={handleSubmit}>
 
                         <div className="d-flex align-items-center mb-3 pb-1">
                           <i className="fas fa-cubes fa-2x me-3" style={{color: "#ff6219;"}}></i>
