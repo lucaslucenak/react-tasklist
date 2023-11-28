@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import AuthService from '../../services/authService';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,9 +14,11 @@ export const SignIn = () => {
       const response = await AuthService.login(username, password);
       localStorage.setItem('jwt', response.jwtToken);
       console.log(localStorage.getItem('jwt'));
+      navigate('/tasklist');
     } catch (e) {
       alert("Erro ao logar: STATUS ", e.status)
     }
+
   }
 
   return (
