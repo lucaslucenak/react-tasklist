@@ -1,19 +1,32 @@
 import React, { useState } from 'react'
 import AuthService from '../../services/authService';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 
 export const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin =  (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      const response =  AuthService.login(username, password);
-      redirect("/");
+      const response = await AuthService.login(username, password);
+      const token = response.jwtToken;
+      localStorage.setItem('jwt', token);
 
-    } catch (error) {
-      console.error('Erro no login: ', error);
+      if (localStorage.getItem('jwt')) {
+        localStorage.setItem('sub', jwtDecode(token).sub);
+        localStorage.setItem('role', jwtDecode(token).role);
+        localStorage.setItem('userId', jwtDecode(token).userId);
+        navigate('/tasklist');
+
+      }
+    } catch (e) {
+      alert("Erro ao logar: STATUS ", e.status)
     }
+
   }
 
   return (
@@ -30,7 +43,7 @@ export const SignIn = () => {
                   <div className="col-md-6 col-lg-7 d-flex align-items-center">
                     <div className="card-body p-4 p-lg-5 text-black">
 
-                      <form onSubmit={() => handleLogin()}>
+                      <form onSubmit={handleSubmit}>
 
                         <div className="d-flex align-items-center mb-3 pb-1">
                           <i className="fas fa-cubes fa-2x me-3" style={{color: "#ff6219;"}}></i>

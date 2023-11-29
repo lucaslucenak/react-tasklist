@@ -1,6 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import UserService from '../../services/userService';
 
 export const SignUp = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const role = "ADMIN";
+    const response = await UserService.createUser(username, password, email, role);
+    navigate('/');
+  }
+
   return (
     <section className="vh-100" style={{backgroundColor: "#9A616D;"}}>
     <div className="container py-5 h-100">
@@ -15,7 +30,7 @@ export const SignUp = () => {
               <div className="col-md-6 col-lg-7 d-flex align-items-center">
                 <div className="card-body p-4 p-lg-5 text-black">
 
-                  <form>
+                  <form onSubmit={handleSubmit}>
 
                     <div className="d-flex align-items-center mb-3 pb-1">
                       <i className="fas fa-cubes fa-2x me-3" style={{color: "#ff6219;"}}></i>
@@ -25,21 +40,26 @@ export const SignUp = () => {
                     <h5 className="fw-normal mb-3 pb-3" style={{letterSpacing: "1px;"}}>Create a new account</h5>
 
                     <div className="form-outline mb-4">
-                      <input type="email" id="form2Example17" className="form-control form-control-lg" />
-                      <label classNameName="form-label" for="form2Example17">Username</label>
+                      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} id="formUsername" className="form-control form-control-lg" />
+                      <label classNameName="form-label" for="formUsername">Username</label>
                     </div>
 
                     <div className="form-outline mb-4">
-                      <input type="password" id="form2Example27" className="form-control form-control-lg" />
-                      <label classNameName="form-label" for="form2Example27">Password</label>
+                      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} id="formEmail" className="form-control form-control-lg" />
+                      <label classNameName="form-label" for="formEmail">Email</label>
+                    </div>
+
+                    <div className="form-outline mb-4">
+                      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} id="formPassword" className="form-control form-control-lg" />
+                      <label classNameName="form-label" for="formPassword">Password</label>
                     </div>
 
                     <div className="pt-1 mb-4">
-                      <button className="btn btn-dark btn-lg btn-block" type="button">Sign Up</button>
+                      <button className="btn btn-dark btn-lg btn-block" type="submit">Sign Up</button>
                     </div>
 
                     {/* <a className="small text-muted" href="#!">Forgot password?</a> */}
-                    <p className="mb-5 pb-lg-2" style={{color: "color: #393f81;"}}>Already have an account? <a href="/signIn"
+                    <p className="mb-5 pb-lg-2" style={{color: "color: #393f81;"}}>Already have an account? <a href="/"
                       style={{color: "color: #393f81;"}}>Sign in here</a></p>
                     {/* <a href="#!" className="small text-muted">Terms of use.</a> */}
                     {/* <a href="#!" className="small text-muted">Privacy policy</a> */}
