@@ -23,7 +23,37 @@ class TaskService {
                     'Authorization': `${jwtToken}`
                 }
             });
-            alert("Task criada com id: " + response.id);
+            alert("Task criada");
+            return response.data;
+        } catch (e) {
+            alert("Erro: " + e)
+        }
+    }
+
+    static async updateTaskStatus(taskId, status) {
+        const jwtToken = localStorage.getItem('jwt');
+        try {
+            const response = await axios.get('http://localhost:8080/task/' + taskId + "/status/" + status, {
+                headers: {
+                    'Authorization': `${jwtToken}`
+                }
+            });
+
+            alert("Task atualizada");
+            return response.data;
+        } catch (e) {
+            alert("Erro: " + e)
+        }
+    }
+
+    static async deleteTask(taskId) {
+        const jwtToken = localStorage.getItem('jwt');
+        try {
+            const response = await axios.delete('http://localhost:8080/task/' + taskId, {
+                headers: {
+                    'Authorization': `${jwtToken}`
+                }
+            });
             return response.data;
         } catch (e) {
             alert("Erro: " + e)

@@ -3,26 +3,29 @@ import { TasklistItem } from '../../components/TasklistItem'
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import TaskService from '../../services/taskService';
+import axios from 'axios';
 
 export const Tasklist = () => {
   const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
-    e.preventDefault();
     localStorage.clear();
     navigate('/');
   }
 
-  const fetchTasks = async () => {
-    const response = await TaskService.getTasksByUserId();
-    setTasks(response);
-    console.log(tasks);
-  }
-
   useEffect(() => {
-    fetchTasks();
-  });
+    const jwtToken = localStorage.getItem('jwt');
+    try {
+      axios.get('http://localhost:8080/task/by-user-id/' + localStorage.getItem('userId'), {
+        headers: {
+          'Authorization': `${jwtToken}`
+        }
+      }).then(res => {setTasks(res.data.reverse())});
+    } catch (e) {
+      alert("Erro: " + e)
+    }
+  }, []);
 
   return (
     <section className="vh-100" style={{ backgroundColor: "#e2d5de;" }}>

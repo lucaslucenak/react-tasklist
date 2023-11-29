@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 import TaskService from '../services/taskService';
-import { useNavigate } from 'react-router-dom';
 
 export const TasklistInput = () => {
     const [title, setTitle] = useState('');
-    const navigate = useNavigate();
 
-    const createTask = async () => {
+    const createTask = async (e) => {
         const userId = localStorage.getItem('userId');
         const status = "TO_DO";
 
         const response = await TaskService.createTask(userId, title, status);
-        navigate('/tasklist');
+        window.location.reload(false);
       }
 
       
