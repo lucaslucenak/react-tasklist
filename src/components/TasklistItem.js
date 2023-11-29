@@ -1,8 +1,6 @@
 import React from 'react'
 
 export const TasklistItem = (props) => {
-
-    
     return (
         <div>
             <li
