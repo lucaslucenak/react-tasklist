@@ -11,15 +11,9 @@ export const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const role = "ADMIN";
-      const response = await UserService.createUser(username, password, email, role);
-      alert("Usuário criado com username: " + response.username);
-      navigate('/');
-    } catch (e) {
-      alert("Erro ao logar: STATUS ", e.status)
-    }
-
+    const role = "ADMIN";
+    const response = await UserService.createUser(username, password, email, role);
+    navigate('/');
   }
 
   return (
