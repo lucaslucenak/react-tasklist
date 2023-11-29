@@ -59,7 +59,7 @@ export const SignUp = () => {
                     </div>
 
                     {/* <a className="small text-muted" href="#!">Forgot password?</a> */}
-                    <p className="mb-5 pb-lg-2" style={{color: "color: #393f81;"}}>Already have an account? <a href="/signIn"
+                    <p className="mb-5 pb-lg-2" style={{color: "color: #393f81;"}}>Already have an account? <a href="/"
                       style={{color: "color: #393f81;"}}>Sign in here</a></p>
                     {/* <a href="#!" className="small text-muted">Terms of use.</a> */}
                     {/* <a href="#!" className="small text-muted">Privacy policy</a> */}
