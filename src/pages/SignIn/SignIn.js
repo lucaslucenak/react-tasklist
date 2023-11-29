@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import AuthService from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
-import JwtService from '../../services/jwtService';
 import { jwtDecode } from "jwt-decode";
 
 export const SignIn = () => {
