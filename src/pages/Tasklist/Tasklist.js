@@ -1,17 +1,29 @@
 import { TasklistInput } from '../../components/TasklistInput'
 import { TasklistItem } from '../../components/TasklistItem'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import TaskService from '../../services/taskService';
 
 export const Tasklist = () => {
+  const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
     e.preventDefault();
     localStorage.clear();
     navigate('/');
-
   }
+
+  const fetchTasks = async () => {
+    const response = await TaskService.getTasksByUserId();
+    setTasks(response);
+    console.log(tasks);
+  }
+
+  useEffect(() => {
+    fetchTasks();
+  });
+
   return (
     <section className="vh-100" style={{ backgroundColor: "#e2d5de;" }}>
       <div className="container py-5 h-100">
@@ -24,9 +36,11 @@ export const Tasklist = () => {
                 <TasklistInput />
 
                 <ul className="list-group mb-0">
-                  <TasklistItem />
-                  <TasklistItem />
-                  <TasklistItem />
+                  {tasks.map(function (task) {
+                    return (
+                      <TasklistItem id={task.id} title={task.title} status={task.status} createdAt={task.createdAt} updatedAt={task.updatedAt} />
+                    )
+                  })}
                 </ul>
               </div>
             </div>

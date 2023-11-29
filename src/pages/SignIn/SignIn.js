@@ -19,6 +19,7 @@ export const SignIn = () => {
       if (localStorage.getItem('jwt')) {
         localStorage.setItem('sub', jwtDecode(token).sub);
         localStorage.setItem('role', jwtDecode(token).role);
+        localStorage.setItem('userId', jwtDecode(token).userId);
         navigate('/tasklist');
 
       }
