@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import AuthService from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
+import JwtService from '../../services/jwtService';
+import { jwtDecode } from "jwt-decode";
 
 export const SignIn = () => {
   const [username, setUsername] = useState('');
@@ -12,9 +14,15 @@ export const SignIn = () => {
 
     try {
       const response = await AuthService.login(username, password);
-      localStorage.setItem('jwt', response.jwtToken);
-      console.log(localStorage.getItem('jwt'));
-      navigate('/tasklist');
+      const token = response.jwtToken;
+      localStorage.setItem('jwt', token);
+
+      if (localStorage.getItem('jwt')) {
+        localStorage.setItem('sub', jwtDecode(token).sub);
+        localStorage.setItem('role', jwtDecode(token).role);
+        navigate('/tasklist');
+
+      }
     } catch (e) {
       alert("Erro ao logar: STATUS ", e.status)
     }
